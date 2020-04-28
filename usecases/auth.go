@@ -6,12 +6,17 @@ import (
 )
 
 // CreateAccessToken usecase returns access token
-func CreateAccessToken(login models.Login) models.User {
-	return models.User{
-		Username: "Test",
-		ID:       1,
-		FullName: "Test",
+func CreateAccessToken(login models.Login) (token models.Accesstoken, err error) {
+	accessToken, err := repositories.CreateAccessToken(
+		login.Username, login.Password,
+	)
+
+	if err == nil {
+		token = models.Accesstoken{
+			Token: accessToken,
+		}
 	}
+	return
 }
 
 // CreateUser Creates User

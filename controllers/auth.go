@@ -20,9 +20,13 @@ func CreateAccessToken(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	user := usecases.CreateAccessToken(login)
-	resp, err := json.Marshal(user)
+	user, err := usecases.CreateAccessToken(login)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
 
+	resp, _ := json.Marshal(user)
 	fmt.Fprintf(w, string(resp))
 }
 

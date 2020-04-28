@@ -41,11 +41,14 @@ func InsertRow(query string, args ...interface{}) int64 {
 	return id
 }
 
-func fetchRows(query string) *sql.Rows {
+func fetchRows(query string, args ...interface{}) *sql.Rows {
 	db := getConnection()
 	defer db.Close()
 
-	rows, err := db.Query(query)
+	stmt, err := db.Prepare(query)
+	CheckErr(err)
+
+	rows, err := stmt.Query(args...)
 	CheckErr(err)
 
 	return rows
