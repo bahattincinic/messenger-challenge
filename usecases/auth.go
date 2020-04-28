@@ -1,20 +1,28 @@
 package usecases
 
 import (
+	"crypto/rand"
+	"fmt"
+
 	"github.com/bahattincinic/messenger-challenge/models"
 	"github.com/bahattincinic/messenger-challenge/repositories"
 )
 
+func tokenGenerate() string {
+	b := make([]byte, 15)
+	rand.Read(b)
+	return fmt.Sprintf("%x", b)
+}
+
 // CreateAccessToken usecase returns access token
 func CreateAccessToken(login models.Login) (token models.Accesstoken, err error) {
-	accessToken, err := repositories.CreateAccessToken(
+	user, err := repositories.GetUser(
 		login.Username, login.Password,
 	)
 
 	if err == nil {
-		token = models.Accesstoken{
-			Token: accessToken,
-		}
+		accessToken := tokenGenerate()
+		token = repositories.CreateAccessToken(accessToken, user)
 	}
 	return
 }
