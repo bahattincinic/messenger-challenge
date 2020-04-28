@@ -1,18 +1,10 @@
 package repositories
 
 import (
-	"crypto/rand"
 	"errors"
-	"fmt"
 
 	"github.com/bahattincinic/messenger-challenge/models"
 )
-
-func tokenGenerate() string {
-	b := make([]byte, 15)
-	rand.Read(b)
-	return fmt.Sprintf("%x", b)
-}
 
 // CreateAccessToken repository returns auth access Token
 func CreateAccessToken(accessToken string, user models.User) models.Accesstoken {
