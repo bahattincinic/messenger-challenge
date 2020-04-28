@@ -1,0 +1,19 @@
+{
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "__debug_bin": true,
+        "vendor/": true
+    },
+    "files.trimTrailingWhitespace": true,
+    "files.trimFinalNewlines": true,
+    "files.insertFinalNewline": true,
+    "remote.extensionKind": {
+        "ms-azuretools.vscode-docker": "ui"
+    },
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": true
+}
