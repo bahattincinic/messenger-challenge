@@ -42,3 +42,19 @@ func CreateUser(username string, password string, fullname string) int64 {
 	)
 	return objID
 }
+
+// CheckAccessToken checks Access Token
+func CheckAccessToken(token string) bool {
+	row := fetchRows(
+		"SELECT count(*) FROM AccessTokens WHERE access_token = ?",
+		token,
+	)
+	var isExists int = 0
+
+	if row.Next() {
+		err := row.Scan(&isExists)
+		CheckErr(err)
+	}
+
+	return isExists > 0
+}

@@ -39,3 +39,8 @@ func CreateUser(signup models.Signup) models.User {
 		FullName: signup.FullName,
 	}
 }
+
+// CheckAccessToken usecases checks access token
+func CheckAccessToken(token string) bool {
+	return repositories.CheckAccessToken(token)
+}
