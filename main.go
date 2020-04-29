@@ -30,6 +30,11 @@ func main() {
 		middlewares.AuthenticationMiddleware(controllers.GetUserList),
 	).Methods(http.MethodGet)
 
+	router.HandleFunc(
+		"/me/",
+		middlewares.AuthenticationMiddleware(controllers.GetCurrentUser),
+	).Methods(http.MethodGet)
+
 	// Start HTTP server.
 	err := http.ListenAndServe(
 		":8090",

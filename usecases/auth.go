@@ -41,6 +41,14 @@ func CreateUser(signup models.Signup) models.User {
 }
 
 // CheckAccessToken usecases checks access token
-func CheckAccessToken(token string) bool {
-	return repositories.CheckAccessToken(token)
+func CheckAccessToken(token string) (user models.User, err error) {
+	accessToken, err := repositories.CheckAccessToken(token)
+
+	if err != nil {
+		return
+	}
+
+	user, err = repositories.FetchUserByID(accessToken.UserID)
+
+	return
 }

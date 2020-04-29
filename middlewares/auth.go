@@ -3,14 +3,18 @@ package middlewares
 import (
 	"net/http"
 
+	"github.com/bahattincinic/messenger-challenge/models"
 	"github.com/bahattincinic/messenger-challenge/usecases"
 )
 
-// MiddlewareCallback is a callback interface
-type MiddlewareCallback func(w http.ResponseWriter, r *http.Request)
+// WrappedMiddlewareFunc is a wrapped function reference
+type WrappedMiddlewareFunc func(w http.ResponseWriter, r *http.Request)
+
+// RequestMiddlewareCallback is a callback function
+type RequestMiddlewareCallback func(w http.ResponseWriter, r *http.Request, user models.User)
 
 // AuthenticationMiddleware user access token
-func AuthenticationMiddleware(next MiddlewareCallback) MiddlewareCallback {
+func AuthenticationMiddleware(next RequestMiddlewareCallback) WrappedMiddlewareFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		accessToken := r.Header.Get("X-Access-Token")
 
@@ -19,12 +23,13 @@ func AuthenticationMiddleware(next MiddlewareCallback) MiddlewareCallback {
 			return
 		}
 
-		isExists := usecases.CheckAccessToken(accessToken)
+		user, err := usecases.CheckAccessToken(accessToken)
 
-		if isExists == false {
+		if err != nil {
 			http.Error(w, "Forbidden", http.StatusForbidden)
 			return
 		}
-		next(w, r)
+
+		next(w, r, user)
 	}
 }

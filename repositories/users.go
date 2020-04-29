@@ -1,6 +1,8 @@
 package repositories
 
 import (
+	"errors"
+
 	"github.com/bahattincinic/messenger-challenge/models"
 )
 
@@ -20,4 +22,20 @@ func FetchUsers() Users {
 	}
 
 	return users
+}
+
+// FetchUserByID repository returns user
+func FetchUserByID(userID int64) (user models.User, err error) {
+	row := fetchRows(
+		"SELECT id, username, fullname FROM Users WHERE id = ?",
+		userID,
+	)
+
+	if row.Next() {
+		err = row.Scan(&user.ID, &user.Username, &user.FullName)
+	} else {
+		err = errors.New("Invalid credentials")
+	}
+
+	return
 }

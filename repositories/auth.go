@@ -14,7 +14,8 @@ func CreateAccessToken(accessToken string, user models.User) models.Accesstoken 
 	)
 
 	return models.Accesstoken{
-		Token: accessToken,
+		Token:  accessToken,
+		UserID: user.ID,
 	}
 }
 
@@ -44,17 +45,18 @@ func CreateUser(username string, password string, fullname string) int64 {
 }
 
 // CheckAccessToken checks Access Token
-func CheckAccessToken(token string) bool {
+func CheckAccessToken(token string) (accessToken models.Accesstoken, err error) {
 	row := fetchRows(
-		"SELECT count(*) FROM AccessTokens WHERE access_token = ?",
+		"SELECT access_token, user_id FROM AccessTokens WHERE access_token = ? LIMIT 1",
 		token,
 	)
-	var isExists int = 0
 
 	if row.Next() {
-		err := row.Scan(&isExists)
+		err := row.Scan(&accessToken.Token, &accessToken.UserID)
 		CheckErr(err)
+	} else {
+		err = errors.New("Invalid credentials")
 	}
 
-	return isExists > 0
+	return
 }
