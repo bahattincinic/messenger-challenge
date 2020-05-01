@@ -44,5 +44,6 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 	user := usecases.CreateUser(signup)
 	resp, err := json.Marshal(user)
 
+	w.WriteHeader(http.StatusCreated)
 	fmt.Fprintf(w, string(resp))
 }

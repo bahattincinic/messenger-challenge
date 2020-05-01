@@ -47,5 +47,7 @@ func CreateMessage(w http.ResponseWriter, r *http.Request, user models.User) {
 	}
 
 	resp, _ := json.Marshal(createdMessage)
+
+	w.WriteHeader(http.StatusCreated)
 	fmt.Fprintf(w, string(resp))
 }
