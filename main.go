@@ -5,54 +5,17 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/bahattincinic/messenger-challenge/controllers"
-	"github.com/bahattincinic/messenger-challenge/middlewares"
 	"github.com/gorilla/handlers"
-	"github.com/gorilla/mux"
 	_ "github.com/mattn/go-sqlite3"
 )
 
 func main() {
-	router := mux.NewRouter()
-	router.Use(middlewares.JSONResponseMiddleware)
-
-	router.HandleFunc(
-		"/auth/login",
-		controllers.CreateAccessToken,
-	).Methods(http.MethodPost)
-
-	router.HandleFunc(
-		"/auth/signup",
-		controllers.Signup,
-	).Methods(http.MethodPost)
-
-	router.HandleFunc(
-		"/users/",
-		middlewares.AuthenticationMiddleware(controllers.GetUserList),
-	).Methods(http.MethodGet)
-
-	router.HandleFunc(
-		"/me/",
-		middlewares.AuthenticationMiddleware(controllers.GetCurrentUser),
-	).Methods(http.MethodGet)
-
-	router.HandleFunc(
-		"/messages/{to}",
-		middlewares.AuthenticationMiddleware(controllers.CreateMessage),
-	).Methods(http.MethodPost)
-
-	router.HandleFunc(
-		"/messages/{to}",
-		middlewares.AuthenticationMiddleware(controllers.GetMessages),
-	).Methods(http.MethodGet)
+	router := NewRouter()
 
 	// Start HTTP server.
 	err := http.ListenAndServe(
 		":8090",
 		handlers.LoggingHandler(os.Stdout, router),
 	)
-
-	if err != nil {
-		log.Fatal(err)
-	}
+	log.Fatal(err)
 }
