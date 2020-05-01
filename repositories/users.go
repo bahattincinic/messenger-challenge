@@ -39,3 +39,19 @@ func FetchUserByID(userID int64) (user models.User, err error) {
 
 	return
 }
+
+// FetchUserByUsername repository returns user
+func FetchUserByUsername(username string) (user models.User, err error) {
+	row := fetchRows(
+		"SELECT id, username, fullname FROM Users WHERE username = ?",
+		username,
+	)
+
+	if row.Next() {
+		err = row.Scan(&user.ID, &user.Username, &user.FullName)
+	} else {
+		err = errors.New("Invalid credentials")
+	}
+
+	return
+}

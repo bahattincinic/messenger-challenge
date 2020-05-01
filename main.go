@@ -14,6 +14,7 @@ import (
 
 func main() {
 	router := mux.NewRouter()
+	router.Use(middlewares.JSONResponseMiddleware)
 
 	router.HandleFunc(
 		"/auth/login",
@@ -33,6 +34,16 @@ func main() {
 	router.HandleFunc(
 		"/me/",
 		middlewares.AuthenticationMiddleware(controllers.GetCurrentUser),
+	).Methods(http.MethodGet)
+
+	router.HandleFunc(
+		"/messages/{to}",
+		middlewares.AuthenticationMiddleware(controllers.CreateMessage),
+	).Methods(http.MethodPost)
+
+	router.HandleFunc(
+		"/messages/{to}",
+		middlewares.AuthenticationMiddleware(controllers.GetMessages),
 	).Methods(http.MethodGet)
 
 	// Start HTTP server.
