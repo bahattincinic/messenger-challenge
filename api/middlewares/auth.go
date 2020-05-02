@@ -3,8 +3,8 @@ package middlewares
 import (
 	"net/http"
 
-	"github.com/bahattincinic/messenger-challenge/models"
-	"github.com/bahattincinic/messenger-challenge/usecases"
+	"github.com/bahattincinic/messenger-challenge/domain/models"
+	"github.com/bahattincinic/messenger-challenge/domain/usecases"
 )
 
 // WrappedMiddlewareFunc is a wrapped function reference

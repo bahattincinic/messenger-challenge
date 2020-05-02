@@ -1,7 +1,7 @@
 package usecases
 
 import (
-	"github.com/bahattincinic/messenger-challenge/repositories"
+	"github.com/bahattincinic/messenger-challenge/domain/repositories"
 )
 
 // GetUsers usecase returns user list

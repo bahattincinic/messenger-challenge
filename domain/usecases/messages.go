@@ -1,8 +1,8 @@
 package usecases
 
 import (
-	"github.com/bahattincinic/messenger-challenge/models"
-	"github.com/bahattincinic/messenger-challenge/repositories"
+	"github.com/bahattincinic/messenger-challenge/domain/models"
+	"github.com/bahattincinic/messenger-challenge/domain/repositories"
 )
 
 // CreateMessage inserts message to Database

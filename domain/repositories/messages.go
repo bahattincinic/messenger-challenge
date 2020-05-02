@@ -3,7 +3,7 @@ package repositories
 import (
 	"time"
 
-	"github.com/bahattincinic/messenger-challenge/models"
+	"github.com/bahattincinic/messenger-challenge/domain/models"
 )
 
 // CreateMessage inserts message to the database

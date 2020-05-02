@@ -1,10 +1,10 @@
-package main
+package api
 
 import (
 	"net/http"
 
-	"github.com/bahattincinic/messenger-challenge/handlers"
-	"github.com/bahattincinic/messenger-challenge/middlewares"
+	"github.com/bahattincinic/messenger-challenge/api/handlers"
+	"github.com/bahattincinic/messenger-challenge/api/middlewares"
 	"github.com/gorilla/mux"
 )
 

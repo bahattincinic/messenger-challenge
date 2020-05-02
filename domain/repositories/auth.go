@@ -3,7 +3,7 @@ package repositories
 import (
 	"errors"
 
-	"github.com/bahattincinic/messenger-challenge/models"
+	"github.com/bahattincinic/messenger-challenge/domain/models"
 )
 
 // CreateAccessToken repository returns auth access Token
