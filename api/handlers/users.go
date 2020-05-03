@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/bahattincinic/messenger-challenge/domain/models"
 	"github.com/bahattincinic/messenger-challenge/domain/usecases"
 )
 
@@ -19,7 +18,12 @@ func GetUserList(w http.ResponseWriter, r *http.Request) {
 
 // GetCurrentUser handler returns authanticated user informations
 func GetCurrentUser(w http.ResponseWriter, r *http.Request) {
-	user := r.Context().Value("user").(models.User)
+	user, err := GetUser(r)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
 	resp, _ := json.Marshal(user)
 	fmt.Fprintf(w, string(resp))
 }

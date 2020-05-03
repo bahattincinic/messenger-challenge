@@ -13,7 +13,7 @@ type Route struct {
 	Name        string
 	Method      string
 	Pattern     string
-	HandlerFunc http.Handler
+	HandlerFunc func(http.ResponseWriter, *http.Request)
 }
 
 // Routes is a list of API Route
@@ -24,7 +24,7 @@ var routes = Routes{
 		"Login",
 		http.MethodPost,
 		"/auth/login",
-		http.HandlerFunc(handlers.CreateAccessToken),
+		handlers.CreateAccessToken,
 	},
 	Route{
 		"Signup",
@@ -36,33 +36,25 @@ var routes = Routes{
 		"UserList",
 		http.MethodGet,
 		"/users/",
-		middlewares.AuthenticationMiddleware(
-			http.HandlerFunc(handlers.GetUserList),
-		),
+		handlers.GetUserList,
 	},
 	Route{
 		"CurrentUser",
 		http.MethodGet,
 		"/me/",
-		middlewares.AuthenticationMiddleware(
-			http.HandlerFunc(handlers.GetCurrentUser),
-		),
+		handlers.GetCurrentUser,
 	},
 	Route{
 		"SendMessage",
 		http.MethodPost,
 		"/messages/{to}",
-		middlewares.AuthenticationMiddleware(
-			http.HandlerFunc(handlers.CreateMessage),
-		),
+		handlers.CreateMessage,
 	},
 	Route{
 		"ShowMessages",
 		http.MethodGet,
 		"/messages/{to}",
-		middlewares.AuthenticationMiddleware(
-			http.HandlerFunc(handlers.GetMessages),
-		),
+		handlers.GetMessages,
 	},
 }
 
@@ -72,13 +64,14 @@ func NewRouter() *mux.Router {
 
 	// Add common middlewares
 	router.Use(middlewares.JSONResponseMiddleware)
+	router.Use(middlewares.AuthenticationMiddleware)
 
 	for _, route := range routes {
 		router.
 			Methods(route.Method).
 			Path(route.Pattern).
 			Name(route.Name).
-			Handler(route.HandlerFunc)
+			HandlerFunc(route.HandlerFunc)
 	}
 
 	return router

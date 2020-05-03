@@ -14,7 +14,12 @@ import (
 func GetMessages(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	var toUser string = vars["to"]
-	user := r.Context().Value("user").(models.User)
+
+	user, err := GetUser(r)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
 
 	messages, err := usecases.GetUserMessages(user, toUser)
 
@@ -32,7 +37,12 @@ func CreateMessage(w http.ResponseWriter, r *http.Request) {
 	var message models.MessageCreate
 	vars := mux.Vars(r)
 	var toUser string = vars["to"]
-	user := r.Context().Value("user").(models.User)
+
+	user, authErr := GetUser(r)
+	if authErr != nil {
+		http.Error(w, authErr.Error(), http.StatusBadRequest)
+		return
+	}
 
 	err := json.NewDecoder(r.Body).Decode(&message)
 

@@ -13,14 +13,14 @@ func AuthenticationMiddleware(next http.Handler) http.Handler {
 		accessToken := r.Header.Get("X-Access-Token")
 
 		if len(accessToken) == 0 {
-			http.Error(w, "Forbidden", http.StatusForbidden)
+			next.ServeHTTP(w, r)
 			return
 		}
 
 		user, err := usecases.CheckAccessToken(accessToken)
 
 		if err != nil {
-			http.Error(w, "Forbidden", http.StatusForbidden)
+			next.ServeHTTP(w, r)
 			return
 		}
 
