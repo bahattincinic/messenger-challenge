@@ -1,21 +1,15 @@
 package middlewares
 
 import (
+	"context"
 	"net/http"
 
-	"github.com/bahattincinic/messenger-challenge/domain/models"
 	"github.com/bahattincinic/messenger-challenge/domain/usecases"
 )
 
-// WrappedMiddlewareFunc is a wrapped function reference
-type WrappedMiddlewareFunc func(w http.ResponseWriter, r *http.Request)
-
-// RequestMiddlewareCallback is a callback function
-type RequestMiddlewareCallback func(w http.ResponseWriter, r *http.Request, user models.User)
-
 // AuthenticationMiddleware user access token
-func AuthenticationMiddleware(next RequestMiddlewareCallback) WrappedMiddlewareFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
+func AuthenticationMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		accessToken := r.Header.Get("X-Access-Token")
 
 		if len(accessToken) == 0 {
@@ -30,6 +24,8 @@ func AuthenticationMiddleware(next RequestMiddlewareCallback) WrappedMiddlewareF
 			return
 		}
 
-		next(w, r, user)
-	}
+		ctx := context.WithValue(r.Context(), "user", user)
+
+		next.ServeHTTP(w, r.WithContext(ctx))
+	})
 }

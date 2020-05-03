@@ -13,7 +13,7 @@ type Route struct {
 	Name        string
 	Method      string
 	Pattern     string
-	HandlerFunc func(http.ResponseWriter, *http.Request)
+	HandlerFunc http.Handler
 }
 
 // Routes is a list of API Route
@@ -24,37 +24,45 @@ var routes = Routes{
 		"Login",
 		http.MethodPost,
 		"/auth/login",
-		handlers.CreateAccessToken,
+		http.HandlerFunc(handlers.CreateAccessToken),
 	},
 	Route{
 		"Signup",
 		http.MethodPost,
 		"/auth/signup",
-		handlers.Signup,
+		http.HandlerFunc(handlers.Signup),
 	},
 	Route{
 		"UserList",
 		http.MethodGet,
 		"/users/",
-		middlewares.AuthenticationMiddleware(handlers.GetUserList),
+		middlewares.AuthenticationMiddleware(
+			http.HandlerFunc(handlers.GetUserList),
+		),
 	},
 	Route{
 		"CurrentUser",
 		http.MethodGet,
 		"/me/",
-		middlewares.AuthenticationMiddleware(handlers.GetCurrentUser),
+		middlewares.AuthenticationMiddleware(
+			http.HandlerFunc(handlers.GetCurrentUser),
+		),
 	},
 	Route{
 		"SendMessage",
 		http.MethodPost,
 		"/messages/{to}",
-		middlewares.AuthenticationMiddleware(handlers.CreateMessage),
+		middlewares.AuthenticationMiddleware(
+			http.HandlerFunc(handlers.CreateMessage),
+		),
 	},
 	Route{
 		"ShowMessages",
 		http.MethodGet,
 		"/messages/{to}",
-		middlewares.AuthenticationMiddleware(handlers.GetMessages),
+		middlewares.AuthenticationMiddleware(
+			http.HandlerFunc(handlers.GetMessages),
+		),
 	},
 }
 
@@ -70,7 +78,7 @@ func NewRouter() *mux.Router {
 			Methods(route.Method).
 			Path(route.Pattern).
 			Name(route.Name).
-			HandlerFunc(route.HandlerFunc)
+			Handler(route.HandlerFunc)
 	}
 
 	return router

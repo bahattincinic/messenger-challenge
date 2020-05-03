@@ -11,9 +11,10 @@ import (
 )
 
 // GetMessages returns user messages
-func GetMessages(w http.ResponseWriter, r *http.Request, user models.User) {
+func GetMessages(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	var toUser string = vars["to"]
+	user := r.Context().Value("user").(models.User)
 
 	messages, err := usecases.GetUserMessages(user, toUser)
 
@@ -27,10 +28,11 @@ func GetMessages(w http.ResponseWriter, r *http.Request, user models.User) {
 }
 
 // CreateMessage creates message
-func CreateMessage(w http.ResponseWriter, r *http.Request, user models.User) {
+func CreateMessage(w http.ResponseWriter, r *http.Request) {
 	var message models.MessageCreate
 	vars := mux.Vars(r)
 	var toUser string = vars["to"]
+	user := r.Context().Value("user").(models.User)
 
 	err := json.NewDecoder(r.Body).Decode(&message)
 

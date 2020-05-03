@@ -10,7 +10,7 @@ import (
 )
 
 // GetUserList handler returns list of user
-func GetUserList(w http.ResponseWriter, r *http.Request, _ models.User) {
+func GetUserList(w http.ResponseWriter, r *http.Request) {
 	users := usecases.GetUsers()
 	resp, _ := json.Marshal(users)
 
@@ -18,7 +18,8 @@ func GetUserList(w http.ResponseWriter, r *http.Request, _ models.User) {
 }
 
 // GetCurrentUser handler returns authanticated user informations
-func GetCurrentUser(w http.ResponseWriter, r *http.Request, user models.User) {
+func GetCurrentUser(w http.ResponseWriter, r *http.Request) {
+	user := r.Context().Value("user").(models.User)
 	resp, _ := json.Marshal(user)
 	fmt.Fprintf(w, string(resp))
 }
