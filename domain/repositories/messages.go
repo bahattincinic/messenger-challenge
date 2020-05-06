@@ -1,51 +1,63 @@
 package repositories
 
 import (
-	"time"
-
 	"github.com/bahattincinic/messenger-challenge/domain/models"
+	"github.com/jinzhu/gorm"
 )
 
-// CreateMessage inserts message to the database
-func CreateMessage(fromUser models.User, toUser models.User, message models.MessageCreate) models.Message {
-	now := time.Now()
+// MessageRepisotry ..
+type MessageRepisotry struct {
+	db *gorm.DB
+}
 
-	messageID := InsertRow(
-		"INSERT INTO Messages (from_user, to_user, message, created_at) VALUES (?,?,?,?)",
-		fromUser.ID, toUser.ID, message.Message, now,
-	)
-
-	return models.Message{
-		ID:        messageID,
-		From:      fromUser.Username,
-		To:        toUser.Username,
-		Message:   message.Message,
-		CreatedAt: now.String(),
+// NewMessageRepo ..
+func NewMessageRepo(db *gorm.DB) *MessageRepisotry {
+	return &MessageRepisotry{
+		db: db,
 	}
 }
 
+// CreateMessage inserts message to the database
+func (r *MessageRepisotry) CreateMessage(
+	fromUser models.User, toUser models.User,
+	messageContext models.MessageCreate,
+) (message models.Message) {
+
+	message = models.Message{
+		FromID:  fromUser.ID,
+		From:    fromUser,
+		ToID:    toUser.ID,
+		To:      toUser,
+		Message: messageContext.Message,
+	}
+	r.db.Create(&message)
+
+	return
+}
+
 // Messages represents list of messages
-type Messages []models.Message
+type Messages []models.MessageResponse
 
 // FetchUsersMessages returns messages
-func FetchUsersMessages(fromUser models.User, toUser models.User) Messages {
-	var messages Messages
-	rows := fetchRows(
-		`SELECT m.id, f_user.username, t_user.username, m.message, m.created_at
-		FROM Messages as m
-		INNER JOIN Users as f_user ON (f_user.id = m.from_user)
-		INNER JOIN Users as t_user ON (t_user.id = m.to_user)
-		WHERE (from_user = ? AND to_user = ?) OR (from_user = ? AND to_user = ?)`,
-		fromUser.ID, toUser.ID, toUser.ID, fromUser.ID,
-	)
+func (r *MessageRepisotry) FetchUsersMessages(
+	fromUser models.User, toUser models.User,
+) Messages {
 
-	for rows.Next() {
-		var message models.Message
-		err := rows.Scan(&message.ID, &message.From, &message.To,
-			&message.Message, &message.CreatedAt)
-		CheckErr(err)
-		messages = append(messages, message)
-	}
+	var messages Messages
+
+	r.db.Table("messages").Select(
+		"messages.message, messages.created_at, from_user.username as from_user, to_user.username as to_user",
+	).Where(
+		"(from_id = ? AND to_id = ?)",
+		fromUser.ID, toUser.ID,
+	).Or(
+		"(from_id = ? AND to_id = ?)",
+		toUser.ID, fromUser.ID,
+	).Joins(
+		"JOIN users as from_user ON from_user.id = messages.from_id",
+	).Joins(
+		"JOIN users as to_user ON to_user.id = messages.to_id",
+	).Scan(&messages)
 
 	return messages
 }

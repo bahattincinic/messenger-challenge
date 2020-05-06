@@ -15,40 +15,45 @@ func tokenGenerate() string {
 }
 
 // CreateAccessToken usecase returns access token
-func CreateAccessToken(login models.Login) (token models.Accesstoken, err error) {
-	user, err := repositories.GetUser(
+func CreateAccessToken(
+	login models.Login,
+	authRepo repositories.AuthRepository,
+) (token models.Accesstoken, err error) {
+
+	user, err := authRepo.GetUser(
 		login.Username, login.Password,
 	)
 
 	if err == nil {
 		accessToken := tokenGenerate()
-		token = repositories.CreateAccessToken(accessToken, user)
+		token = authRepo.CreateAccessToken(accessToken, user)
 	}
 	return
 }
 
 // CreateUser Creates User
-func CreateUser(signup models.Signup) models.User {
-	userID := repositories.CreateUser(
+func CreateUser(
+	signup models.Signup,
+	authRepo repositories.AuthRepository,
+) (user models.User) {
+	user = authRepo.CreateUser(
 		signup.Username, signup.Password, signup.FullName,
 	)
-
-	return models.User{
-		Username: signup.Username,
-		ID:       userID,
-		FullName: signup.FullName,
-	}
+	return
 }
 
 // CheckAccessToken usecases checks access token
-func CheckAccessToken(token string) (user models.User, err error) {
-	accessToken, err := repositories.CheckAccessToken(token)
+func CheckAccessToken(
+	token string, authRepo repositories.AuthRepository,
+	userRepo repositories.UserRepository,
+) (user models.User, err error) {
 
+	accessToken, err := authRepo.CheckAccessToken(token)
 	if err != nil {
 		return
 	}
 
-	user, err = repositories.FetchUserByID(accessToken.UserID)
+	user, err = userRepo.FetchUserByID(accessToken.UserID)
 
 	return
 }

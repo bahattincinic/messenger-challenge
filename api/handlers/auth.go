@@ -10,7 +10,7 @@ import (
 )
 
 // CreateAccessToken API Creates user Access token
-func CreateAccessToken(w http.ResponseWriter, r *http.Request) {
+func (h *BaseHandler) CreateAccessToken(w http.ResponseWriter, r *http.Request) {
 	var login models.Login
 
 	err := json.NewDecoder(r.Body).Decode(&login)
@@ -20,7 +20,7 @@ func CreateAccessToken(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	user, err := usecases.CreateAccessToken(login)
+	user, err := usecases.CreateAccessToken(login, h.authRepo)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
@@ -31,7 +31,7 @@ func CreateAccessToken(w http.ResponseWriter, r *http.Request) {
 }
 
 // Signup API Creates user
-func Signup(w http.ResponseWriter, r *http.Request) {
+func (h *BaseHandler) Signup(w http.ResponseWriter, r *http.Request) {
 	var signup models.Signup
 
 	err := json.NewDecoder(r.Body).Decode(&signup)
@@ -41,7 +41,7 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	user := usecases.CreateUser(signup)
+	user := usecases.CreateUser(signup, h.authRepo)
 	resp, err := json.Marshal(user)
 
 	w.WriteHeader(http.StatusCreated)

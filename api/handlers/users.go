@@ -9,15 +9,15 @@ import (
 )
 
 // GetUserList handler returns list of user
-func GetUserList(w http.ResponseWriter, r *http.Request) {
-	users := usecases.GetUsers()
+func (h *BaseHandler) GetUserList(w http.ResponseWriter, r *http.Request) {
+	users := usecases.GetUsers(h.userRepo)
 	resp, _ := json.Marshal(users)
 
 	fmt.Fprintf(w, string(resp))
 }
 
 // GetCurrentUser handler returns authanticated user informations
-func GetCurrentUser(w http.ResponseWriter, r *http.Request) {
+func (h *BaseHandler) GetCurrentUser(w http.ResponseWriter, r *http.Request) {
 	user, err := GetUser(r)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)

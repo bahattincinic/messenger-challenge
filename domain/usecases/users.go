@@ -5,6 +5,6 @@ import (
 )
 
 // GetUsers usecase returns user list
-func GetUsers() repositories.Users {
-	return repositories.FetchUsers()
+func GetUsers(userRepo repositories.UserRepository) repositories.Users {
+	return userRepo.FetchUsers()
 }

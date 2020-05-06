@@ -11,7 +11,7 @@ import (
 )
 
 // GetMessages returns user messages
-func GetMessages(w http.ResponseWriter, r *http.Request) {
+func (h *BaseHandler) GetMessages(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	var toUser string = vars["to"]
 
@@ -21,7 +21,9 @@ func GetMessages(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	messages, err := usecases.GetUserMessages(user, toUser)
+	messages, err := usecases.GetUserMessages(
+		user, toUser, h.userRepo, h.messageRepo,
+	)
 
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
@@ -33,7 +35,7 @@ func GetMessages(w http.ResponseWriter, r *http.Request) {
 }
 
 // CreateMessage creates message
-func CreateMessage(w http.ResponseWriter, r *http.Request) {
+func (h *BaseHandler) CreateMessage(w http.ResponseWriter, r *http.Request) {
 	var message models.MessageCreate
 	vars := mux.Vars(r)
 	var toUser string = vars["to"]
@@ -51,7 +53,10 @@ func CreateMessage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	createdMessage, err := usecases.CreateMessage(user, toUser, message)
+	createdMessage, err := usecases.CreateMessage(
+		user, toUser, message,
+		h.userRepo, h.messageRepo,
+	)
 
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)

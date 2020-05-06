@@ -4,7 +4,10 @@ import (
 	"context"
 	"net/http"
 
+	"github.com/bahattincinic/messenger-challenge/domain/repositories"
 	"github.com/bahattincinic/messenger-challenge/domain/usecases"
+	"github.com/gorilla/mux"
+	"github.com/jinzhu/gorm"
 )
 
 const accessTokenHeader = "X-Access-Token"
@@ -13,26 +16,33 @@ const accessTokenHeader = "X-Access-Token"
 const UserCtxKey = "user"
 
 // AuthenticationMiddleware user access token
-func AuthenticationMiddleware(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		accessToken := r.Header.Get(accessTokenHeader)
+func AuthenticationMiddleware(db *gorm.DB) mux.MiddlewareFunc {
+	authRepo := repositories.NewAuthRepo(db)
+	userRepo := repositories.NewUserRepo(db)
 
-		if len(accessToken) == 0 {
-			next.ServeHTTP(w, r)
-			return
-		}
+	return func(next http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			accessToken := r.Header.Get(accessTokenHeader)
 
-		user, err := usecases.CheckAccessToken(accessToken)
+			if len(accessToken) == 0 {
+				next.ServeHTTP(w, r)
+				return
+			}
 
-		if err != nil {
-			next.ServeHTTP(w, r)
-			return
-		}
+			user, err := usecases.CheckAccessToken(
+				accessToken, *authRepo, *userRepo,
+			)
 
-		ctx := context.WithValue(
-			r.Context(), UserCtxKey, user,
-		)
+			if err != nil {
+				next.ServeHTTP(w, r)
+				return
+			}
 
-		next.ServeHTTP(w, r.WithContext(ctx))
-	})
+			ctx := context.WithValue(
+				r.Context(), UserCtxKey, user,
+			)
+
+			next.ServeHTTP(w, r.WithContext(ctx))
+		})
+	}
 }

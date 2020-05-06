@@ -6,25 +6,35 @@ import (
 )
 
 // CreateMessage inserts message to Database
-func CreateMessage(fromUser models.User, toUser string, message models.MessageCreate) (createdMessage models.Message, err error) {
-	user, err := repositories.FetchUserByUsername(toUser)
+func CreateMessage(
+	fromUser models.User, toUser string,
+	message models.MessageCreate,
+	userRepo repositories.UserRepository,
+	messageRepo repositories.MessageRepisotry,
+) (createdMessage models.Message, err error) {
 
+	user, err := userRepo.FetchUserByUsername(toUser)
 	if err != nil {
 		return
 	}
 
-	createdMessage = repositories.CreateMessage(fromUser, user, message)
+	createdMessage = messageRepo.CreateMessage(fromUser, user, message)
 	return
 }
 
 // GetUserMessages returns users messages
-func GetUserMessages(fromUser models.User, toUser string) (messages repositories.Messages, err error) {
-	user, err := repositories.FetchUserByUsername(toUser)
+func GetUserMessages(
+	fromUser models.User,
+	toUser string,
+	userRepo repositories.UserRepository,
+	messageRepo repositories.MessageRepisotry,
+) (messages repositories.Messages, err error) {
 
+	user, err := userRepo.FetchUserByUsername(toUser)
 	if err != nil {
 		return
 	}
 
-	messages = repositories.FetchUsersMessages(fromUser, user)
+	messages = messageRepo.FetchUsersMessages(fromUser, user)
 	return
 }

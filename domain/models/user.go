@@ -1,10 +1,14 @@
 package models
 
+import "github.com/jinzhu/gorm"
+
 // User Model Object
 type User struct {
-	ID       int64  `json:"id"`
+	gorm.Model
+
 	Username string `json:"username"`
 	FullName string `json:"fullname"`
+	Password string `json:"-"`
 }
 
 // Login Object

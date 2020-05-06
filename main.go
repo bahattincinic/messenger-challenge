@@ -6,12 +6,17 @@ import (
 	"os"
 
 	"github.com/bahattincinic/messenger-challenge/api"
+	"github.com/bahattincinic/messenger-challenge/domain/models"
 	"github.com/gorilla/handlers"
-	_ "github.com/mattn/go-sqlite3"
 )
 
 func main() {
-	router := api.NewRouter()
+	db, dbErr := models.InitDatabase()
+	if dbErr != nil {
+		log.Fatalf("failed to connect database: %s\n", dbErr)
+	}
+
+	router := api.NewRouter(db)
 
 	// Start HTTP server.
 	err := http.ListenAndServe(
