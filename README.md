@@ -33,3 +33,4 @@ Postman Documentation: https://documenter.getpostman.com/view/191558/SzmcZe7s?ve
 
 - [ ] Add unit tests
 - [ ] Add websocket support
+- [ ] Add Github Actions
