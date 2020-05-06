@@ -27,60 +27,7 @@ I developed a simple Messenger API with golang to make a practice.
 
 ## API Documentation
 
-Signup:
-
-```
-POST /auth/signup
-Payload
-{
-	"username": "user3",
-	"password": "123456",
-	"fullname": "User 3"
-}
-```
-
-Login:
-
-```
-POST /auth/login
-Payload
-{
-	"username": "user1",
-	"password": "123456"
-}
-```
-
-Current User:
-
-```
-GET /me/
-Header X-Access-Token=<accessToken>
-```
-
-User List:
-
-```
-GET /users/
-Header X-Access-Token=<accessToken>
-```
-
-List messages:
-
-```
-GET /messages/<toUser>
-Header X-Access-Token=<accessToken>
-```
-
-Write Message:
-
-```
-Post /messages/<toUser>
-Header X-Access-Token=<accessToken>
-Payload
-{
-	"message": "hello"
-}
-```
+Postman Documentation: https://documenter.getpostman.com/view/191558/SzmcZe7s?version=latest
 
 ## Todos
 
