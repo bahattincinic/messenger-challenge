@@ -2,6 +2,10 @@
 
 I developed a simple Messenger API with golang to make a practice.
 
+## Requirements
+- Golang
+- The Clean Architecture (https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
+
 ## Folder Structure
 
 ```
