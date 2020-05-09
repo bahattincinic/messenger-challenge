@@ -6,7 +6,6 @@ import "github.com/jinzhu/gorm"
 type Accesstoken struct {
 	gorm.Model
 
-	ID     uint `gorm:"primary_key";json:"-"`
 	Token  string
 	User   User
 	UserID uint

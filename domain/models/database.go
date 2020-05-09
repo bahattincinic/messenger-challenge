@@ -5,6 +5,7 @@ import (
 
 	"github.com/bahattincinic/messenger-challenge/config"
 	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/postgres"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 )
 

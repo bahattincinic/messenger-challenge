@@ -46,7 +46,8 @@ func (r *MessageRepisotry) FetchUsersMessages(
 	var messages Messages
 
 	r.db.Table("messages").Select(
-		"messages.message, messages.created_at, from_user.username as from_user, to_user.username as to_user",
+		`messages.message, messages.created_at,
+		from_user.username as from_user, to_user.username as to_user`,
 	).Where(
 		"(from_id = ? AND to_id = ?)",
 		fromUser.ID, toUser.ID,
