@@ -32,7 +32,7 @@ func (r *UserRepository) FetchUsers() Users {
 
 // FetchUserByID repository returns user
 func (r *UserRepository) FetchUserByID(userID uint) (user models.User, err error) {
-	result := r.db.First(&user, userID)
+	result := r.db.First(&user, "id = ?", userID)
 
 	if result.Error != nil {
 		err = errors.New("Invalid credentials")

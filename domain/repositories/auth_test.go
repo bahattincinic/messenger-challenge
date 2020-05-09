@@ -15,7 +15,7 @@ import (
 	"github.com/stretchr/testify/suite"
 )
 
-type Suite struct {
+type AuthRepoSuite struct {
 	suite.Suite
 
 	DB         *gorm.DB
@@ -23,7 +23,7 @@ type Suite struct {
 	repository AuthRepository
 }
 
-func (s *Suite) SetupSuite() {
+func (s *AuthRepoSuite) SetupSuite() {
 	var (
 		db  *sql.DB
 		err error
@@ -40,15 +40,15 @@ func (s *Suite) SetupSuite() {
 	s.repository = *NewAuthRepo(s.DB)
 }
 
-func (s *Suite) AfterTest(_, _ string) {
+func (s *AuthRepoSuite) AfterTest(_, _ string) {
 	require.NoError(s.T(), s.mock.ExpectationsWereMet())
 }
 
-func TestInit(t *testing.T) {
-	suite.Run(t, new(Suite))
+func TestAuthRepoInit(t *testing.T) {
+	suite.Run(t, new(AuthRepoSuite))
 }
 
-func (s *Suite) TestCreateAccessToken() {
+func (s *AuthRepoSuite) TestCreateAccessToken() {
 	var (
 		token   = "121dsdsaaa11"
 		userID  = uint(1)
@@ -78,7 +78,7 @@ func (s *Suite) TestCreateAccessToken() {
 	assert.Equal(s.T(), tokenID, fmt.Sprint(createdToken.ID))
 }
 
-func (s *Suite) TestGetUser() {
+func (s *AuthRepoSuite) TestGetUser() {
 	var (
 		userID   = 1
 		username = "test"
@@ -110,7 +110,7 @@ func (s *Suite) TestGetUser() {
 	assert.Equal(s.T(), fmt.Sprint(userID), fmt.Sprint(user.ID))
 }
 
-func (s *Suite) TestGetUserNotFound() {
+func (s *AuthRepoSuite) TestGetUserNotFound() {
 	var (
 		username = "test"
 		password = "test123"
@@ -136,7 +136,7 @@ func (s *Suite) TestGetUserNotFound() {
 	assert.Equal(s.T(), fmt.Sprint(user.ID), "0")
 }
 
-func (s *Suite) TestCreateUser() {
+func (s *AuthRepoSuite) TestCreateUser() {
 	var (
 		username = "test"
 		password = "passwd"
@@ -165,7 +165,7 @@ func (s *Suite) TestCreateUser() {
 	assert.Equal(s.T(), userID, fmt.Sprint(createdUser.ID))
 }
 
-func (s *Suite) TestCheckAccessToken() {
+func (s *AuthRepoSuite) TestCheckAccessToken() {
 	var (
 		token   = "dsdsdsdsdddd"
 		tokenID = 55
@@ -197,7 +197,7 @@ func (s *Suite) TestCheckAccessToken() {
 	assert.Equal(s.T(), fmt.Sprint(tokenID), fmt.Sprint(obj.ID))
 }
 
-func (s *Suite) TestCheckAccessTokenNotFound() {
+func (s *AuthRepoSuite) TestCheckAccessTokenNotFound() {
 	var token = "1212121"
 
 	rows := sqlmock.NewRows([]string{
