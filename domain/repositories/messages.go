@@ -5,32 +5,33 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-// MessageRepisotry ..
-type MessageRepisotry struct {
+// MessageRepository ..
+type MessageRepository struct {
 	db *gorm.DB
 }
 
 // NewMessageRepo ..
-func NewMessageRepo(db *gorm.DB) *MessageRepisotry {
-	return &MessageRepisotry{
+func NewMessageRepo(db *gorm.DB) *MessageRepository {
+	return &MessageRepository{
 		db: db,
 	}
 }
 
 // CreateMessage inserts message to the database
-func (r *MessageRepisotry) CreateMessage(
+func (r *MessageRepository) CreateMessage(
 	fromUser models.User, toUser models.User,
 	messageContext models.MessageCreate,
 ) (message models.Message) {
 
 	message = models.Message{
 		FromID:  fromUser.ID,
-		From:    fromUser,
 		ToID:    toUser.ID,
-		To:      toUser,
 		Message: messageContext.Message,
 	}
 	r.db.Create(&message)
+
+	message.From = fromUser
+	message.To = toUser
 
 	return
 }
@@ -39,7 +40,7 @@ func (r *MessageRepisotry) CreateMessage(
 type Messages []models.MessageResponse
 
 // FetchUsersMessages returns messages
-func (r *MessageRepisotry) FetchUsersMessages(
+func (r *MessageRepository) FetchUsersMessages(
 	fromUser models.User, toUser models.User,
 ) Messages {
 

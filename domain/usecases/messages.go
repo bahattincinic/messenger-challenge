@@ -10,7 +10,7 @@ func CreateMessage(
 	fromUser models.User, toUser string,
 	message models.MessageCreate,
 	userRepo repositories.UserRepository,
-	messageRepo repositories.MessageRepisotry,
+	messageRepo repositories.MessageRepository,
 ) (createdMessage models.Message, err error) {
 
 	user, err := userRepo.FetchUserByUsername(toUser)
@@ -27,7 +27,7 @@ func GetUserMessages(
 	fromUser models.User,
 	toUser string,
 	userRepo repositories.UserRepository,
-	messageRepo repositories.MessageRepisotry,
+	messageRepo repositories.MessageRepository,
 ) (messages repositories.Messages, err error) {
 
 	user, err := userRepo.FetchUserByUsername(toUser)

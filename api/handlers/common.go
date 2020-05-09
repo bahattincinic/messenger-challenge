@@ -24,7 +24,7 @@ func GetUser(r *http.Request) (user models.User, err error) {
 type BaseHandler struct {
 	userRepo    repositories.UserRepository
 	authRepo    repositories.AuthRepository
-	messageRepo repositories.MessageRepisotry
+	messageRepo repositories.MessageRepository
 }
 
 // NewBaseHandler returns a new BaseHandler
