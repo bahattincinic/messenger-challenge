@@ -29,6 +29,20 @@ I developed a simple Messenger API with golang to make a practice.
 └── messenger.db
 ```
 
+## Installation
+
+```
+$ git clone git@github.com:bahattincinic/messenger-challenge.git
+$ cd messenger-challenge
+$ go mod download
+```
+
+## Running Unit Tests
+
+```
+$ go test ./...
+```
+
 ## API Documentation
 
 Postman Documentation: https://documenter.getpostman.com/view/191558/SzmcZe7s?version=latest
