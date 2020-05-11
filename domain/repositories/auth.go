@@ -12,6 +12,14 @@ type AuthRepository struct {
 	db *gorm.DB
 }
 
+// IAuthRepository is a interface of AuthRepository
+type IAuthRepository interface {
+	CreateAccessToken(accessToken string, user models.User) models.Accesstoken
+	GetUser(username string, password string) (user models.User, err error)
+	CreateUser(username string, password string, fullname string) models.User
+	CheckAccessToken(token string) (accessToken models.Accesstoken, err error)
+}
+
 // NewAuthRepo ..
 func NewAuthRepo(db *gorm.DB) *AuthRepository {
 	return &AuthRepository{

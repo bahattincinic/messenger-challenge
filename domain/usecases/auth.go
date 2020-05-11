@@ -17,7 +17,7 @@ func tokenGenerate() string {
 // CreateAccessToken usecase returns access token
 func CreateAccessToken(
 	login models.Login,
-	authRepo repositories.AuthRepository,
+	authRepo repositories.IAuthRepository,
 ) (token models.Accesstoken, err error) {
 
 	user, err := authRepo.GetUser(
@@ -34,7 +34,7 @@ func CreateAccessToken(
 // CreateUser Creates User
 func CreateUser(
 	signup models.Signup,
-	authRepo repositories.AuthRepository,
+	authRepo repositories.IAuthRepository,
 ) (user models.User) {
 	user = authRepo.CreateUser(
 		signup.Username, signup.Password, signup.FullName,
@@ -44,8 +44,8 @@ func CreateUser(
 
 // CheckAccessToken usecases checks access token
 func CheckAccessToken(
-	token string, authRepo repositories.AuthRepository,
-	userRepo repositories.UserRepository,
+	token string, authRepo repositories.IAuthRepository,
+	userRepo repositories.IUserRepository,
 ) (user models.User, err error) {
 
 	accessToken, err := authRepo.CheckAccessToken(token)

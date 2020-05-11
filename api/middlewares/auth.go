@@ -30,7 +30,7 @@ func AuthenticationMiddleware(db *gorm.DB) mux.MiddlewareFunc {
 			}
 
 			user, err := usecases.CheckAccessToken(
-				accessToken, *authRepo, *userRepo,
+				accessToken, authRepo, userRepo,
 			)
 
 			if err != nil {

@@ -12,15 +12,22 @@ type UserRepository struct {
 	db *gorm.DB
 }
 
-// NewUserRepo ..
+// Users is list of users
+type Users []models.User
+
+// IUserRepository is a interface of UserRepository
+type IUserRepository interface {
+	FetchUsers() Users
+	FetchUserByID(userID uint) (user models.User, err error)
+	FetchUserByUsername(username string) (user models.User, err error)
+}
+
+// NewUserRepo returns new UserRepository
 func NewUserRepo(db *gorm.DB) *UserRepository {
 	return &UserRepository{
 		db: db,
 	}
 }
-
-// Users is list of users
-type Users []models.User
 
 // FetchUsers Repository returns user list
 func (r *UserRepository) FetchUsers() Users {

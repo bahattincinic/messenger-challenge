@@ -10,6 +10,20 @@ type MessageRepository struct {
 	db *gorm.DB
 }
 
+// Messages represents list of messages
+type Messages []models.MessageResponse
+
+// IMessageRepository is a interface of MessageRepository
+type IMessageRepository interface {
+	CreateMessage(
+		fromUser models.User, toUser models.User, messageContext models.MessageCreate,
+	) (message models.Message)
+
+	FetchUsersMessages(
+		fromUser models.User, toUser models.User,
+	) Messages
+}
+
 // NewMessageRepo ..
 func NewMessageRepo(db *gorm.DB) *MessageRepository {
 	return &MessageRepository{
@@ -35,9 +49,6 @@ func (r *MessageRepository) CreateMessage(
 
 	return
 }
-
-// Messages represents list of messages
-type Messages []models.MessageResponse
 
 // FetchUsersMessages returns messages
 func (r *MessageRepository) FetchUsersMessages(

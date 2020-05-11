@@ -22,9 +22,9 @@ func GetUser(r *http.Request) (user models.User, err error) {
 
 // BaseHandler will hold everything that controller needs
 type BaseHandler struct {
-	userRepo    repositories.UserRepository
-	authRepo    repositories.AuthRepository
-	messageRepo repositories.MessageRepository
+	userRepo    repositories.IUserRepository
+	authRepo    repositories.IAuthRepository
+	messageRepo repositories.IMessageRepository
 }
 
 // NewBaseHandler returns a new BaseHandler
@@ -34,8 +34,8 @@ func NewBaseHandler(db *gorm.DB) *BaseHandler {
 	messageRepo := repositories.NewMessageRepo(db)
 
 	return &BaseHandler{
-		userRepo:    *userRepo,
-		authRepo:    *authRepo,
-		messageRepo: *messageRepo,
+		userRepo:    userRepo,
+		authRepo:    authRepo,
+		messageRepo: messageRepo,
 	}
 }

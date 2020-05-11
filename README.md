@@ -40,7 +40,16 @@ $ go mod download
 ## Running Unit Tests
 
 ```
-$ go test ./...
+$ go test ./... -coverprofile cp.out
+
+?   	github.com/bahattincinic/messenger-challenge	[no test files]
+?   	github.com/bahattincinic/messenger-challenge/api	[no test files]
+?   	github.com/bahattincinic/messenger-challenge/api/handlers	[no test files]
+?   	github.com/bahattincinic/messenger-challenge/api/middlewares	[no test files]
+?   	github.com/bahattincinic/messenger-challenge/config	[no test files]
+?   	github.com/bahattincinic/messenger-challenge/domain/models	[no test files]
+ok  	github.com/bahattincinic/messenger-challenge/domain/repositories	0.439s	coverage: 63.0% of statements
+ok  	github.com/bahattincinic/messenger-challenge/domain/usecases	0.643s	coverage: 73.1% of statements
 ```
 
 ## API Documentation

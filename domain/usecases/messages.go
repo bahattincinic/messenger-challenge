@@ -9,8 +9,8 @@ import (
 func CreateMessage(
 	fromUser models.User, toUser string,
 	message models.MessageCreate,
-	userRepo repositories.UserRepository,
-	messageRepo repositories.MessageRepository,
+	userRepo repositories.IUserRepository,
+	messageRepo repositories.IMessageRepository,
 ) (createdMessage models.Message, err error) {
 
 	user, err := userRepo.FetchUserByUsername(toUser)
@@ -26,8 +26,8 @@ func CreateMessage(
 func GetUserMessages(
 	fromUser models.User,
 	toUser string,
-	userRepo repositories.UserRepository,
-	messageRepo repositories.MessageRepository,
+	userRepo repositories.IUserRepository,
+	messageRepo repositories.IMessageRepository,
 ) (messages repositories.Messages, err error) {
 
 	user, err := userRepo.FetchUserByUsername(toUser)
