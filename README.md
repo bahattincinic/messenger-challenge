@@ -45,11 +45,11 @@ $ go test ./... -coverprofile cp.out
 ?   	github.com/bahattincinic/messenger-challenge	[no test files]
 ?   	github.com/bahattincinic/messenger-challenge/api	[no test files]
 ?   	github.com/bahattincinic/messenger-challenge/api/handlers	[no test files]
-ok  	github.com/bahattincinic/messenger-challenge/api/middlewares	0.647s	coverage: 17.6% of statements
-?   	github.com/bahattincinic/messenger-challenge/config	[no test files]
+ok  	github.com/bahattincinic/messenger-challenge/api/middlewares	0.284s	coverage: 17.6% of statements
+ok  	github.com/bahattincinic/messenger-challenge/config	0.299s	coverage: 90.0% of statements
 ?   	github.com/bahattincinic/messenger-challenge/domain/models	[no test files]
-ok  	github.com/bahattincinic/messenger-challenge/domain/repositories	1.063s	coverage: 63.0% of statements
-ok  	github.com/bahattincinic/messenger-challenge/domain/usecases	0.828s	coverage: 73.1% of statements
+ok  	github.com/bahattincinic/messenger-challenge/domain/repositories	0.373s	coverage: 63.0% of statements
+ok  	github.com/bahattincinic/messenger-challenge/domain/usecases	0.564s	coverage: 73.1% of statements
 ```
 
 ## API Documentation
