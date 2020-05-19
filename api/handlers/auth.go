@@ -27,7 +27,7 @@ func (h *BaseHandler) CreateAccessToken(w http.ResponseWriter, r *http.Request) 
 	}
 
 	resp, _ := json.Marshal(user)
-	fmt.Fprintf(w, string(resp))
+	fmt.Fprint(w, string(resp))
 }
 
 // Signup API Creates user
@@ -42,8 +42,8 @@ func (h *BaseHandler) Signup(w http.ResponseWriter, r *http.Request) {
 	}
 
 	user := usecases.CreateUser(signup, h.authRepo)
-	resp, err := json.Marshal(user)
+	resp, _ := json.Marshal(user)
 
 	w.WriteHeader(http.StatusCreated)
-	fmt.Fprintf(w, string(resp))
+	fmt.Fprint(w, string(resp))
 }

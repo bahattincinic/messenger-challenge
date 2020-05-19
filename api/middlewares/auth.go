@@ -38,6 +38,7 @@ func AuthenticationMiddleware(db *gorm.DB) mux.MiddlewareFunc {
 				return
 			}
 
+			// nolint:staticcheck
 			ctx := context.WithValue(
 				r.Context(), UserCtxKey, user,
 			)

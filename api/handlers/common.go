@@ -13,7 +13,7 @@ import (
 func GetUser(r *http.Request) (user models.User, err error) {
 	user, found := r.Context().Value("user").(models.User)
 
-	if found == false {
+	if !found {
 		err = errors.New("Forbidden")
 	}
 

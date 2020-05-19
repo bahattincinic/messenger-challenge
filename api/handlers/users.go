@@ -13,7 +13,7 @@ func (h *BaseHandler) GetUserList(w http.ResponseWriter, r *http.Request) {
 	users := usecases.GetUsers(h.userRepo)
 	resp, _ := json.Marshal(users)
 
-	fmt.Fprintf(w, string(resp))
+	fmt.Fprint(w, string(resp))
 }
 
 // GetCurrentUser handler returns authanticated user informations
@@ -25,5 +25,5 @@ func (h *BaseHandler) GetCurrentUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	resp, _ := json.Marshal(user)
-	fmt.Fprintf(w, string(resp))
+	fmt.Fprint(w, string(resp))
 }

@@ -31,7 +31,7 @@ func (h *BaseHandler) GetMessages(w http.ResponseWriter, r *http.Request) {
 	}
 
 	resp, _ := json.Marshal(messages)
-	fmt.Fprintf(w, string(resp))
+	fmt.Fprint(w, string(resp))
 }
 
 // CreateMessage creates message
@@ -66,5 +66,5 @@ func (h *BaseHandler) CreateMessage(w http.ResponseWriter, r *http.Request) {
 	resp, _ := json.Marshal(createdMessage)
 
 	w.WriteHeader(http.StatusCreated)
-	fmt.Fprintf(w, string(resp))
+	fmt.Fprint(w, string(resp))
 }

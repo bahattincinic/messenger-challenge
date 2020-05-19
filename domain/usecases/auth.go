@@ -10,6 +10,7 @@ import (
 
 func tokenGenerate() string {
 	b := make([]byte, 15)
+	// nolint:errcheck
 	rand.Read(b)
 	return fmt.Sprintf("%x", b)
 }
