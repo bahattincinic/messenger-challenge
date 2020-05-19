@@ -55,3 +55,10 @@ ok  	github.com/bahattincinic/messenger-challenge/domain/usecases	0.564s	coverag
 ## API Documentation
 
 Postman Documentation: https://documenter.getpostman.com/view/191558/SzmcZe7s?version=latest
+
+
+## Github Actions
+
+I added 2 different Github Actions Job for automating unit-test and linter process.
+
+<https://github.com/bahattincinic/messenger-challenge/actions>
